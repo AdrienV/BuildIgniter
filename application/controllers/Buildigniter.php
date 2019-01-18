@@ -23,13 +23,7 @@ class Buildigniter extends CI_Controller {
         parent::__construct();
         $this->demo = false;
     }
-    /**
-     * Generator controller
-     */
-    public function basic() {
-        // Load view
-        $this->load->view('buildigniter');
-    }
+    
     /**
      * Generator controller
      */
