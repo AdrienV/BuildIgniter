@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Form Generator controller
  *
@@ -17,13 +16,14 @@ class Buildigniter extends CI_Controller {
     // Addon V1.1 - 2013-07-31
     private $js = array();
     private $css = array();
+
     // End Addon V1.1
 
     public function __construct() {
         parent::__construct();
         $this->demo = false;
     }
-    
+
     /**
      * Generator controller
      */
@@ -72,23 +72,26 @@ class Buildigniter extends CI_Controller {
         // Call builder code
         $data = $this->builder(true);
 
-        // Create controller
-        $fp = fopen('application/controllers/' . ucfirst($this->formName) . '.php', 'w');
-        fwrite($fp, $data['phpcontroller']);
-        fclose($fp);
-        // Create model
-        $fp = fopen('application/models/' . ucfirst($this->formName) . '_model.php', 'w');
-        fwrite($fp, $data['phpmodel']);
-        fclose($fp);
+        // Check if not in demo
+        if (!strpos($_SERVER['HTTP_HOST'], 'devtoo.fr')) {
+            // Create controller
+            $fp = fopen('application/controllers/' . ucfirst($this->formName) . '.php', 'w');
+            fwrite($fp, $data['phpcontroller']);
+            fclose($fp);
+            // Create model
+            $fp = fopen('application/models/' . ucfirst($this->formName) . '_model.php', 'w');
+            fwrite($fp, $data['phpmodel']);
+            fclose($fp);
 
-        // Create view
-        $fp = fopen('application/views/' . $this->formName . '.php', 'w');
-        fwrite($fp, $data['htmlview']);
-        fclose($fp);
-        // Create success page
-        $fp = fopen('application/views/' . $this->formName . '_success.php', 'w');
-        fwrite($fp, $this->successBuilder());
-        fclose($fp);
+            // Create view
+            $fp = fopen('application/views/' . $this->formName . '.php', 'w');
+            fwrite($fp, $data['htmlview']);
+            fclose($fp);
+            // Create success page
+            $fp = fopen('application/views/' . $this->formName . '_success.php', 'w');
+            fwrite($fp, $this->successBuilder());
+            fclose($fp);
+        }
     }
 
     /**
@@ -97,9 +100,12 @@ class Buildigniter extends CI_Controller {
     public function dbCreator() {
         $data = $this->builder(true);
 
-        // Create DB
-        $this->db->query("DROP TABLE IF EXISTS " . $this->formName);
-        $this->db->query($data['sqlview']);
+        // Check if not in demo
+        if (!strpos($_SERVER['HTTP_HOST'], 'devtoo.fr')) {
+            // Create DB
+            $this->db->query("DROP TABLE IF EXISTS " . $this->formName);
+            $this->db->query($data['sqlview']);
+        }
     }
 
     /**
@@ -336,7 +342,7 @@ class Buildigniter extends CI_Controller {
                         $plugin = $this->addPlugin('date');
                     }
                     $plugin = $this->addPlugin($type);
-                    if(!isset($this->js['script'])) {
+                    if (!isset($this->js['script'])) {
                         $this->js['script'] = '';
                     }
                     if ($type == 'datetime') {
@@ -357,7 +363,7 @@ class Buildigniter extends CI_Controller {
                         $html .= '
                             <option value="' . $option . '" <?php echo set_select("' . $field['name'] . '", "' . $option . '"); ?>>' . $option . '</option>';
                     }
-                    $html .='
+                    $html .= '
                         </select>';
                     break;
                 case 'checkbox' :
@@ -404,16 +410,16 @@ class Buildigniter extends CI_Controller {
                 <head>
                 <link type="text/css" rel="stylesheet" href="<?php echo base_url() ?>assets/css/generator/' . $this->cssName . '.css">
                     '; // Addon - 2013-07-31
-                foreach($this->css as $css) {
-                    $view .= $css.'
+        foreach ($this->css as $css) {
+            $view .= $css . '
                         ';
-                }
-                foreach($this->js as $js) {
-                    $view .= $js.'
+        }
+        foreach ($this->js as $js) {
+            $view .= $js . '
                         ';
-                }
-                // End Addon
-                $view .= '
+        }
+        // End Addon
+        $view .= '
                 </head>
                 <body>
                 <?php
@@ -503,8 +509,7 @@ class Buildigniter extends CI_Controller {
     }
 
     // End Addon
-
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/generator.php */
+/* End of file Buildigniter.php */
+/* Location: ./application/controllers/Buildigniter.php */

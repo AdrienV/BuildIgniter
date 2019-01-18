@@ -16,7 +16,7 @@
         <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
         <meta name="author" content="Łukasz Holeczek">
         <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
-        <title>CoreUI Free Bootstrap Admin Template</title>
+        <title>BuildIgniter - Form Builder for CodeIgniter V3</title>
         <!-- Icons-->
         <link href="<?php echo base_url() ?>node_modules/@coreui/icons/css/coreui-icons.min.css" rel="stylesheet">
         <link href="<?php echo base_url() ?>node_modules/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
@@ -149,7 +149,7 @@
                     <!-- Breadcrumb Menu-->
                     <li class="breadcrumb-menu d-md-down-none">
                         <div class="btn-group" role="group" aria-label="Button group">
-                            <a class="btn settingBtn" href="#">
+                            <a class="btn" data-toggle="modal" data-target="#settings">
                                 <i class="icon-settings"></i>  Settings</a>
                         </div>
                     </li>
@@ -1046,26 +1046,35 @@
                     </div>
                 </div>
 
-
-
-
-
-
-
-
-                <!-- Settings -->
-                <div style="display:none">
-                    <div id="settings">
-                        <h3>Change form settings</h3>
-                        <p>
-                            <label>Change form name</label>
-                            <input type="text" id="formName" value="myform" />
-                        </p>
-                        <p>
-                            <label>Change css file name</label>
-                            <input type="text" id="cssName" value="style" />.css
-                        </p>
-                        <input type="submit" class="saveSettings" value="Save">
+                <!--Settings MODAL-->
+                <div class="modal fade" id="settings" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Change form settings</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Change form name</label>
+                                    <input type="text" class="form-control" id="formName" value="myform" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Change css file name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="cssName" value="style" />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">.css</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" data-dismiss="modal" class="saveSettings btn btn-primary"><i class="icons cui-check"></i> Save</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>
