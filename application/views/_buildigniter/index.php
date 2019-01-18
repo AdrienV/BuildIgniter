@@ -195,6 +195,9 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
+                                                <div class="alert alert-secondary mb-4">
+                                                    <i class="icons cui-lightbulb"></i> No change here is saved, maybe in the future babe...
+                                                </div>
                                                 <textarea id="code_content_controller" style="display: none"></textarea>
                                             </div>
                                             <div class="modal-footer">
@@ -233,6 +236,9 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
+                                                <div class="alert alert-secondary mb-4">
+                                                    <i class="icons cui-lightbulb"></i> No change here is saved, maybe in the future babe...
+                                                </div>
                                                 <textarea id="code_content_model" style="display: none"></textarea>
                                             </div>
                                             <div class="modal-footer">
@@ -271,6 +277,9 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
+                                                <div class="alert alert-secondary mb-4">
+                                                    <i class="icons cui-lightbulb"></i> No change here is saved, maybe in the future babe...
+                                                </div>
                                                 <textarea id="code_content_view" style="display: none"></textarea>
                                             </div>
                                             <div class="modal-footer">
@@ -310,6 +319,9 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
+                                                <div class="alert alert-secondary mb-4">
+                                                    <i class="icons cui-lightbulb"></i> No change here is saved, maybe in the future babe...
+                                                </div>
                                                 <textarea id="code_content_sql" style="display: none"></textarea>
                                             </div>
                                             <div class="modal-footer">
@@ -432,7 +444,7 @@
                                                         <input type="text" class="select_option" value="mythirdoption" />
                                                         <span class="deleteOption"></span>
                                                     </p>
-                                                    
+
                                                     <div class="alert alert-secondary">
                                                         <i class="icons cui-lightbulb"></i> To apply your params > Build Form 
                                                     </div>
@@ -503,7 +515,7 @@
                                                         <input type="text" class="select_option" value="mythirdoption" />
                                                         <span class="deleteOption"></span>
                                                     </p>
-                                                    
+
                                                     <div class="alert alert-secondary">
                                                         <i class="icons cui-lightbulb"></i> To apply your params > Build Form 
                                                     </div>
@@ -555,7 +567,7 @@
                                                         <label for="password_value">Value</label>
                                                         <input type="text" class="password_value" />
                                                     </p>
-                                                    
+
                                                     <div class="alert alert-secondary">
                                                         <i class="icons cui-lightbulb"></i> To apply your params > Build Form 
                                                     </div>
@@ -606,7 +618,7 @@
                                                         <label for="hidden_value">Value</label>
                                                         <input type="text" class="hidden_value" />
                                                     </p>
-                                                    
+
                                                     <div class="alert alert-secondary">
                                                         <i class="icons cui-lightbulb"></i> To apply your params > Build Form 
                                                     </div>
@@ -656,7 +668,7 @@
                                                         <label for="reset_value">Value *</label>
                                                         <input type="text" class="reset_value" value="reset" />
                                                     </p>
-                                                    
+
                                                     <div class="alert alert-secondary">
                                                         <i class="icons cui-lightbulb"></i> To apply your params > Build Form 
                                                     </div>
@@ -706,7 +718,7 @@
                                                         <label for="submit_value">Value *</label>
                                                         <input type="text" class="submit_value" value="submit" />
                                                     </p>
-                                                    
+
                                                     <div class="alert alert-secondary">
                                                         <i class="icons cui-lightbulb"></i> To apply your params > Build Form 
                                                     </div>
@@ -777,7 +789,7 @@
                                                         <input type="text" class="select_option" value="mythirdoption" />
                                                         <span class="deleteOption"></span>
                                                     </p>
-                                                    
+
                                                     <div class="alert alert-secondary">
                                                         <i class="icons cui-lightbulb"></i> To apply your params > Build Form 
                                                     </div>
@@ -829,7 +841,7 @@
                                                         <label for="textarea_value">Value</label>
                                                         <input type="text" class="textarea_value" />
                                                     </p>
-                                                    
+
                                                     <div class="alert alert-secondary">
                                                         <i class="icons cui-lightbulb"></i> To apply your params > Build Form 
                                                     </div>
@@ -901,7 +913,7 @@
                                                             <option value="20">20 Mo</option>
                                                         </select>
                                                     </p>
-                                                    
+
                                                     <div class="alert alert-secondary">
                                                         <i class="icons cui-lightbulb"></i> To apply your params > Build Form 
                                                     </div>
@@ -954,7 +966,7 @@
                                                         <label for="date_value">Value</label>
                                                         <input type="text" class="date_value" />
                                                     </p>
-                                                    
+
                                                     <div class="alert alert-secondary">
                                                         <i class="icons cui-lightbulb"></i> To apply your params > Build Form 
                                                     </div>
@@ -1006,7 +1018,7 @@
                                                         <label for="datetime_value">Value</label>
                                                         <input type="text" class="datetime_value" />
                                                     </p>
-                                                    
+
                                                     <div class="alert alert-secondary">
                                                         <i class="icons cui-lightbulb"></i> To apply your params > Build Form 
                                                     </div>

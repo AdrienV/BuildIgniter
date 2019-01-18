@@ -9,13 +9,14 @@ Everyone can install, share, or participate to this project.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Special thanks to Codeigniter for this amazing framework () & to CoreUI for their opensource template (https://github.com/coreui/coreui-free-bootstrap-admin-template)
+Special thanks to Codeigniter for this amazing framework (https://github.com/bcit-ci/CodeIgniter) & to CoreUI for their opensource template (https://github.com/coreui/coreui-free-bootstrap-admin-template)
 
 ## Table of Contents
 
 * [Installation](#installation)
 * [Configure](#configure)
 * [How to Use](#how-to-use)
+
 
 
 ## Installation
@@ -34,12 +35,12 @@ $ npm install
 ```
 
 ### Launch the project
-If you don't have any server, you can install WAMP / MAMP (http://www.wampserver.com/) and drag sources in the /www folder
+If you don't have any server, install WAMP / MAMP (http://www.wampserver.com/) and drag sources in the /www folder
 ``` bash
 # launch your project in your browser
 (http://localhost/MyProjectName)
 ```
-/!\ You will get errors at this step, you need to configure your database
+/!\ You will get errors at this step, you need to configure your database /!\
 
 ## Configure
 
