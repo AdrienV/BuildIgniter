@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Form Generator controller
  *
@@ -13,6 +14,8 @@ class Buildigniter extends CI_Controller {
     private $cssName;
     private $formDatas;
     private $demo;
+    private $projectId;
+    private $pathCreator;
     // Addon V1.1 - 2013-07-31
     private $js = array();
     private $css = array();
@@ -21,90 +24,114 @@ class Buildigniter extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->demo = false;
+
+        $this->pathCreator = $this->config->item('path_creator');
+
+        if (isset($_SERVER['HTTP_HOST']) && !strpos($_SERVER['HTTP_HOST'], 'devtoo.fr')) {
+            $this->demo = false;
+        } else {
+            $this->demo = true;
+        }
     }
 
     /**
      * Generator controller
      */
     public function index() {
-        // Load view
-        $this->load->view('_buildigniter/index');
+        // Create a project_id
+        $this->projectId = 'temp_' . uniqid();
+        // Check if we have right on FCPATH or if path_creator exists
+        if (is_writable(FCPATH) || (is_dir($this->pathCreator && is_writable($this->pathCreator)))) {
+            // Create the global folder creator 
+            if (!is_dir($this->pathCreator)) {
+                mkdir($this->pathCreator, 0775);
+            }
+            // Create the projectId folder creator 
+            if (!is_dir($this->pathCreator . '/' . $this->projectId)) {
+                mkdir($this->pathCreator . '/' . $this->projectId, 0775);
+                copyAllContent(FCPATH, $this->pathCreator . '/' . $this->projectId);
+            }
+
+            // Load view
+            $this->load->view('_buildigniter/index', array('projectId' => $this->projectId));
+        } else {
+            // Load view
+            $this->load->view('_buildigniter/error_folder');
+        }
     }
 
     /**
      * Live code
      */
-    public function builder($process = false) {
-        // Get form name
-        $this->formName = $this->input->post('formName');
-        // Get css name
-        $this->cssName = $this->input->post('cssName');
-        // Get form datas
-        $this->formDatas = json_decode($this->input->post('formDatas'), true);
+    public function builder($process = false, $projectId = false) {
+        if ($projectId) {
+            // Get form name
+            $this->formName = $this->input->post('formName');
+            // Get css name
+            $this->cssName = $this->input->post('cssName');
+            // Get form datas
+            $this->formDatas = json_decode($this->input->post('formDatas'), true);
 
-        // Build codes
-        list($data['controller'], $data['phpcontroller']) = $this->controllerBuilder();
-        list($data['model'], $data['phpmodel']) = $this->modelBuilder();
-        list($data['view'], $data['htmlview']) = $this->viewBuilder();
-        list($data['sql'], $data['sqlview']) = $this->sqlBuilder();
+            // Build codes
+            list($data['controller'], $data['phpcontroller']) = $this->controllerBuilder();
+            list($data['model'], $data['phpmodel']) = $this->modelBuilder();
+            list($data['view'], $data['htmlview']) = $this->viewBuilder();
+            list($data['sql'], $data['sqlview']) = $this->sqlBuilder();
 
-        // Demo version
-        if ($this->demo == true) {
-            $data['controller'] = substr($data['controller'], 0, 500) . '.... <br /><strong>All code desactivated in demo version !</strong>';
-            $data['model'] = substr($data['model'], 0, 500) . '.... <br /><strong>All code desactivated in demo version !</strong>';
-            $data['view'] = substr($data['view'], 0, 500) . '.... <br /><strong>All code desactivated in demo version !</strong>';
-            $data['sql'] = substr($data['sql'], 0, 100) . '.... <br /><strong>All code desactivated in demo version !</strong>';
-        }
-        // For process
-        if ($process == true) {
-            return $data;
-        } else {
-            echo json_encode($data);
+            // For process
+            if ($process && $process != 'false') {
+                return $data;
+            } else {
+                $data['myFolder'] = $this->listMyFolder($this->pathCreator . '/' . $projectId);
+                echo json_encode($data);
+            }
         }
     }
 
     /**
      * Create files into CI project
      */
-    public function creator() {
+    public function creator($projectId = false) {
 
         // Call builder code
-        $data = $this->builder(true);
+        $data = $this->builder(true, $projectId);
 
-        // Check if not in demo
-        if (!strpos($_SERVER['HTTP_HOST'], 'devtoo.fr')) {
-            // Create controller
-            $fp = fopen('application/controllers/' . ucfirst($this->formName) . '.php', 'w');
-            fwrite($fp, $data['phpcontroller']);
-            fclose($fp);
-            // Create model
-            $fp = fopen('application/models/' . ucfirst($this->formName) . '_model.php', 'w');
-            fwrite($fp, $data['phpmodel']);
-            fclose($fp);
+        // Create controller
+        $fp = fopen($this->pathCreator . '/' . $projectId . '/application/controllers/' . ucfirst($this->formName) . '.php', 'w');
+        fwrite($fp, $data['phpcontroller']);
+        fclose($fp);
+        // Create model
+        $fp = fopen($this->pathCreator . '/' . $projectId . '/application/models/' . ucfirst($this->formName) . '_model.php', 'w');
+        fwrite($fp, $data['phpmodel']);
+        fclose($fp);
 
-            // Create view
-            $fp = fopen('application/views/' . $this->formName . '.php', 'w');
-            fwrite($fp, $data['htmlview']);
-            fclose($fp);
-            // Create success page
-            $fp = fopen('application/views/' . $this->formName . '_success.php', 'w');
-            fwrite($fp, $this->successBuilder());
-            fclose($fp);
-        }
+        // Create view
+        $fp = fopen($this->pathCreator . '/' . $projectId . '/application/views/' . $this->formName . '.php', 'w');
+        fwrite($fp, $data['htmlview']);
+        fclose($fp);
+        // Create success page
+        $fp = fopen($this->pathCreator . '/' . $projectId . '/application/views/' . $this->formName . '_success.php', 'w');
+        fwrite($fp, $this->successBuilder());
+        fclose($fp);
+
+        $data['myFolder'] = $this->listMyFolder($this->pathCreator . '/' . $projectId);
+        echo json_encode($data);
     }
 
     /**
      * Create db
      */
-    public function dbCreator() {
-        $data = $this->builder(true);
+    public function dbCreator($projectId = false) {
+        $data = $this->builder(true, $projectId);
 
         // Check if not in demo
-        if (!strpos($_SERVER['HTTP_HOST'], 'devtoo.fr')) {
+        if (!$this->demo) {
             // Create DB
             $this->db->query("DROP TABLE IF EXISTS " . $this->formName);
             $this->db->query($data['sqlview']);
+
+            $data['myFolder'] = $this->listMyFolder($this->pathCreator . '/' . $projectId);
+            echo json_encode($data);
         }
     }
 
@@ -488,7 +515,6 @@ class Buildigniter extends CI_Controller {
         return $html;
     }
 
-    // Addon - 2013-07-31
     /**
      * Add a plugin
      *
@@ -508,8 +534,103 @@ class Buildigniter extends CI_Controller {
             <script src="<?php echo base_url() ?>assets/js/generator/plugins/' . $name . '.js"></script>';
     }
 
-    // End Addon
+    /**
+     * Return the folder content
+     * 
+     * @param string $dir
+     * @return html
+     */
+    private function listMyFolder($dir = APPPATH) {
+        $ffs = scandir($dir);
+
+        unset($ffs[array_search('.', $ffs, true)]);
+        unset($ffs[array_search('..', $ffs, true)]);
+        unset($ffs[array_search('.DS_Store', $ffs, true)]);
+        unset($ffs[array_search('', $ffs, true)]);
+
+        if (count($ffs) < 1) {
+            return;
+        }
+
+        $ul = '<ul>';
+        foreach ($ffs as $ff) {
+            if (is_dir($dir . '/' . $ff)) {
+                $ul .= '<li>';
+                $ul .= $ff;
+                $ul .= $this->listMyFolder($dir . '/' . $ff . "/");
+                $ul .= '</li>';
+            } else {
+                // Search for color class
+                switch ($ff) {
+                    case '.htaccess' :
+                        $class = 'text-default';
+                        break;
+                    case 'Buildigniter.php' :
+                        $class = 'text-danger';
+                        break;
+                    default :
+                        $class = 'text-info';
+                        break;
+                }
+                // Folder search
+                if (strpos($dir . $ff, '_buildigniter')) {
+                    $class = 'text-danger';
+                }
+                $ul .= '<li class="' . $class . '" data-jstree=\'{"icon":"fa fa-file"}\'>' . $ff . '</li>';
+            }
+        }
+        $ul .= '</ul>';
+
+        return $ul;
+    }
+
+    /**
+     * Get folder content (Ajax)
+     * @return html
+     */
+    public function getMyFolder($projectId = false) {
+        echo json_encode($this->listMyFolder($this->pathCreator . '/' . $projectId));
+    }
+
+    /**
+     * Download my folder
+     */
+    public function downloadMyFolder($projectId) {
+        $this->load->library('zip');
+        $path = $this->pathCreator . '/' . $projectId;
+        $this->zip->read_dir($path, FALSE);
+        $this->zip->archive($path . '.zip');
+        $this->zip->download('my_package.zip');
+    }
+
+    /**
+     * CRON - Clean old folders created
+     */
+    public function cleanFolders() {
+        if ($this->config->item('clean_folders') == true) {
+            $dirs = array_diff(scandir($this->pathCreator), array('.', '..', '.DS_Store'));
+
+            if (!empty($dirs)) {
+                foreach ($dirs as $folder) {
+                    print("\nFolder : " . $folder);
+                    print("\nMax Date : " . date('Y-m-d H:i:s', strtotime('-' . $this->config->item('clean_folders_time'))));
+                    print("\nCreated On : " . date('Y-m-d H:i:s', filemtime($this->pathCreator . '/' . $folder)));
+
+                    if (strtotime('-' . $this->config->item('clean_folders_time')) > filemtime($this->pathCreator . '/' . $folder)) {
+                        print("\n...Deleted !");
+                        system('rm -rf ' . escapeshellarg($this->pathCreator . '/' . $folder), $retval);
+                    } else {
+                        print("\n...Living...");
+                    }
+                }
+            }
+            print("\n\nProcess complete !");
+        } else {
+            print("\n\nError : Active 'clean_folders' in /application/config.php");
+        }
+    }
+
 }
 
 /* End of file Buildigniter.php */
-/* Location: ./application/controllers/Buildigniter.php */
+/* Location: ./application/controllers/Buildigniter.php */ 

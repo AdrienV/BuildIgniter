@@ -48,6 +48,13 @@
             <a class="navbar-brand" href="<?php echo base_url() ?>">
                 <i class="icons font-2xl d-block cui-layers"></i>&nbsp;BuildIgniter
             </a>
+            <?php if (strpos($_SERVER['HTTP_HOST'], 'devtoo.fr')) : ?>
+                <ul class="nav navbar-nav d-md-down-none">
+                    <li class="nav-item px-3">
+                        <a class="nav-link" href="https://github.com/AdrienV/BuildIgniter" target="_blank"><img src="<?php echo base_url() ?>assets/img/github.png" height="15px" alt="github" /></a>
+                    </li>
+                </ul>
+            <?php endif; ?>
             <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -137,18 +144,19 @@
                                 <i class="nav-icon icon-list"></i> Create Tables <br /><small><i>Automatically in database</i></small>
                             </a>
                         </li>
-                    </ul>
+                    </ul> 
                 </nav>
                 <button class="sidebar-minimizer brand-minimizer" type="button"></button>
             </div>
             <main class="main">
                 <!-- Breadcrumb-->
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="<?php echo base_url() ?>">Home</a></li>
-                    <li class="breadcrumb-item active">Generate Codeigniter Form</li>
+                    <li class="breadcrumb-item d-md-down-none"><a href="<?php echo base_url() ?>">Home</a></li>
+                    <li class="breadcrumb-item d-md-down-none active">Generate Codeigniter Form</li>
                     <!-- Breadcrumb Menu-->
-                    <li class="breadcrumb-menu d-md-down-none">
+                    <li class="breadcrumb-menu">
                         <div class="btn-group" role="group" aria-label="Button group">
+                            <a class="btn folder_status" data-toggle="modal" data-target="#myFolder"><i class="icons cui-cloud-download"></i> My Package</a>
                             <a class="btn" data-toggle="modal" data-target="#settings">
                                 <i class="icon-settings"></i>  Settings</a>
                         </div>
@@ -160,7 +168,7 @@
                             <!-- NO CODE, FIRST LAUNCH -->
                             <div class="no_code" style="margin: auto; vertical-align: middle; text-align: center">
                                 <h2 class="text-right text-info"><i class="icons font-2xl cui-cog"></i> Change settings <i class="icons font-2xl cui-chevron-top"></i></h2>
-                                <h1 class="text-info"><i class="icons font-5xl cui-layers"></i></h1>
+                                <h1 class="text-info mt-5"><i class="icons font-5xl cui-layers"></i></h1>
                                 <h1 class="text-info"><i class="icons font-2xl cui-chevron-left"></i> Add a component</h1>
                             </div>
 
@@ -333,7 +341,7 @@
                             </div>
 
                             <!-- FORM BUILDER -->
-                            <div class="card" style="" id="builder">
+                            <div class="card" id="builder" style="display: none">
                                 <div class="card-header">
                                     <strong>Form Builder</strong>
                                     <small></small>
@@ -1077,6 +1085,30 @@
                         </div>
                     </div>
                 </div>
+
+                <!--MyFolder MODAL-->
+                <div class="modal fade" id="myFolder" tabindex="-1" role="dialog" aria-labelledby="myFolderLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Project files</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="myFolderTree">
+                                    <ul></ul>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" data-dismiss="modal" class="saveSettings btn btn-secondary">Close</button>
+                                <a class="btn btn-primary" href="<?php base_url() ?>buildigniter/downloadMyFolder/<?php echo $projectId; ?>"><i class="icons cui-cloud-download"></i> Download My Package</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </main>
         </div>
         <footer class="app-footer">
@@ -1087,6 +1119,7 @@
         </footer>
         <!--CONSTANTS-->
         <input type="hidden" id="base_url" value="<?php echo base_url() ?>" />
+        <input type="hidden" id="projectId" value="<?php echo $projectId ?>" />
         <!-- CoreUI and necessary plugins-->
         <script src="<?php echo base_url() ?>node_modules/jquery/dist/jquery.min.js"></script>
         <script src="<?php echo base_url() ?>node_modules/popper.js/dist/umd/popper.min.js"></script>
@@ -1099,6 +1132,8 @@
         <link type="text/css" rel="stylesheet" href="<?= base_url() ?>node_modules/codemirror/lib/codemirror.css">
         <script src="<?php echo base_url() ?>node_modules/codemirror/lib/codemirror.js"></script>
         <script src="<?php echo base_url() ?>template_core_ui/src/js/main.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
         <!-- BuildIgniter-->
         <link type="text/css" rel="stylesheet" href="<?= base_url() ?>assets/css/generator/jqueryui.css">
         <link type="text/css" rel="stylesheet" href="<?= base_url() ?>assets/css/generator/colorbox.css">
