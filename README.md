@@ -56,6 +56,16 @@ Open the file ``` /application/config/database.php``` and insert your database i
 ....
 ```
 
+### Project management
+1 - Make sure you have this folder in 775 : /buildigniter_creator/
+2 - Open /application/config.php and set the variables "clean_folders" & "clean_folders_time"
+3 - Create a CRON on your server to delete OLD folders created (IMPORTANT), each loading create a new folder in "/buildigniter_creator/", to be sure your server keep clean, create your cron each 2 or 3 hours :
+
+``` 
+php /your_project_path/index.php buildigniter cleanFolders
+```
+
+
 
 ## How To Use
 

@@ -9,8 +9,8 @@ function loadNewField() {
     $('.delete_field').on('click', function () {
         $(this).parent().parent().parent().remove();
     });
-    
-    
+
+
 
     // Show or hide database options
     $('.add_database').unbind('click');
@@ -24,7 +24,7 @@ function loadNewField() {
             $('.database_infos', _oldparent).css('visibility', 'hidden');
         }
     });
-    
+
     loadSelectOptions();
 }
 
@@ -83,11 +83,11 @@ $(document).ready(function () {
 
         // Compt increment
         comptField++;
-        
+
         loadNewField();
     });
 
-    
+
 
     // Show settings box 
     $('.settingBtn').colorbox({
@@ -430,7 +430,7 @@ $(document).ready(function () {
 
         // Call the ajax builder
         $.ajax({
-            url: $('#base_url').val() + "buildigniter/builder",
+            url: $('#base_url').val() + "buildigniter/builder/false/" + $('#projectId').val(),
             dataType: 'json',
             data: {
                 'formName': formName,
@@ -506,6 +506,9 @@ $(document).ready(function () {
                 $('#code .code_lines:eq(3)').html(data.sql.length);
 
                 $('#live').html(data.htmlview);
+
+                // Update myFolder
+                generateTree(data.myFolder);
             }
         });
 
@@ -531,7 +534,7 @@ $(document).ready(function () {
 
         // Call the ajax builder
         $.ajax({
-            url: $('#base_url').val() + "buildigniter/creator",
+            url: $('#base_url').val() + "buildigniter/creator/" + $('#projectId').val(),
             dataType: 'json',
             data: {
                 'formName': formName,
@@ -540,9 +543,8 @@ $(document).ready(function () {
             },
             type: 'post',
             success: function (data) {
-                $('#errors').show();
-                // Create a link to see form in action
-                $('#errors').html('<a href="' + $('#base_url').val() + formName + '" class="openForm" target="_blank">Files created, click to see your form in action</a>');
+                // Update myFolder
+                generateTree(data.myFolder);
             }
         });
     }
@@ -556,7 +558,7 @@ $(document).ready(function () {
 
         // Call the ajax builder
         $.ajax({
-            url: $('#base_url').val() + "buildigniter/dbCreator",
+            url: $('#base_url').val() + "buildigniter/dbCreator/" + $('#projectId').val(),
             dataType: 'json',
             data: {
                 'formName': formName,
@@ -565,7 +567,6 @@ $(document).ready(function () {
             },
             type: 'post',
             success: function (data) {
-
             }
         });
     }
@@ -585,6 +586,33 @@ $(document).ready(function () {
         } else
             cm.setOption('mode', 'clike');
     }
+
+    // Generate folder tree
+    function generateTree(myFolder) {
+        if (myFolder) {
+            $('.folder_status').addClass('text-success');
+            // Hide updated text
+            setTimeout(function clearUpdated() {
+                $('.folder_status').removeClass('text-success');
+            }, 2500);
+            $('#myFolderTree').jstree(true).settings.core.data = myFolder;
+            $('#myFolderTree').jstree(true).refresh();
+        }
+    }
+
+    // Init tree
+    function initTree() {
+        $.ajax({
+            url: $('#base_url').val() + "buildigniter/getMyFolder/" + $('#projectId').val(),
+            dataType: 'json',
+            type: 'post',
+            success: function (data) {
+                $('#myFolderTree').html(data);
+                $('#myFolderTree').jstree();
+            }
+        });
+    }
+    initTree();
 
 });
 
