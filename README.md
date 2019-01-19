@@ -3,6 +3,8 @@ Codeigniter Form Builder - Auto Generate Form validation &amp; database
 
 [Online Demo](http://buildigniter.devtoo.fr)
 
+[![Codeigniter Form Builder](http://buildigniter.devtoo.fr/assets/img/view1.png)](http://buildigniter.devtoo.fr)
+
 BuildIgniter is an opensource project, to create forms / form validation / databases tables for CodeIgniter quickly.
 
 Everyone can install, share, or participate to this project.
@@ -75,6 +77,8 @@ php /your_project_path/index.php buildigniter cleanFolders
 
 Use the left menu to add elements
 
+[![Codeigniter Form Builder](http://buildigniter.devtoo.fr/assets/img/view1.png)](http://buildigniter.devtoo.fr)
+
 ### Generate Code
 
 Click on "Build Form", and check the different codes generated : Controller / Model / View / SQL
@@ -94,6 +98,9 @@ Click on "Create Files", your new files are automatically created in your Codeig
 
 Click on "Create Tables", your new tables are automatically created in your database to work with your files previously created
 
+### Download your package
+
+[![Codeigniter Download Package](http://buildigniter.devtoo.fr/assets/img/view2.png)](http://buildigniter.devtoo.fr)
 
 
 ## Enjoy ! ;)
